@@ -1,0 +1,100 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "type": "object",
+      "description": "User profile with role and preferences",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "operator", "viewer"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "lastLoginAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "email", "role"]
+    },
+    "UserConfig": {
+      "title": "UserConfig",
+      "type": "object",
+      "description": "User customized emergency alert thresholds and notifications",
+      "properties": {
+        "userId": { "type": "string" },
+        "alertConfig": { "type": "object" },
+        "activeSectorId": { "type": "string" },
+        "theme": { "type": "string", "enum": ["dark", "light"] },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "alertConfig"]
+    },
+    "IncidentReport": {
+      "title": "IncidentReport",
+      "type": "object",
+      "description": "Pollution incidents and regulatory dispatches logged by operators or automated drones",
+      "properties": {
+        "id": { "type": "string" },
+        "sectorId": { "type": "string" },
+        "sectorName": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "ph": { "type": "number" },
+        "turbidity": { "type": "number" },
+        "severity": { "type": "string", "enum": ["CRITICAL", "WARNING", "INFO"] },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "agency": { "type": "string" },
+        "status": { "type": "string", "enum": ["OPEN", "DISPATCHED", "RESOLVED"] },
+        "createdBy": { "type": "string" },
+        "createdByEmail": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "sectorId", "lat", "lng", "ph", "severity", "title", "createdAt"]
+    },
+    "TelemetrySnapshot": {
+      "title": "TelemetrySnapshot",
+      "type": "object",
+      "description": "Saved water sample mission snapshots",
+      "properties": {
+        "id": { "type": "string" },
+        "sectorId": { "type": "string" },
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "ph": { "type": "number" },
+        "aqi": { "type": "number" },
+        "turbidity": { "type": "number" },
+        "dissolvedOxygen": { "type": "number" },
+        "trashCollectedKg": { "type": "number" }
+      },
+      "required": ["id", "sectorId", "timestamp", "lat", "lng", "ph"]
+    }
+  },
+  "firestore": {
+    "users": {
+      "path": "users/{userId}",
+      "entity": "UserProfile",
+      "read": "request.auth != null",
+      "write": "request.auth != null && request.auth.uid == userId"
+    },
+    "userConfigs": {
+      "path": "userConfigs/{userId}",
+      "entity": "UserConfig",
+      "read": "request.auth != null",
+      "write": "request.auth != null && request.auth.uid == userId"
+    },
+    "incidentReports": {
+      "path": "incidentReports/{reportId}",
+      "entity": "IncidentReport",
+      "read": "true",
+      "write": "true" 
+    },
+    "telemetrySnapshots": {
+      "path": "telemetrySnapshots/{snapshotId}",
+      "entity": "TelemetrySnapshot",
+      "read": "true",
+      "write": "true"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Trash-Trekker",
+  "description": "Autonomous Tapan Dighi lake-cleaning and water-quality monitoring dashboard tracking real-time GPS telemetry, multi-robot fleet sweepers, authentic in-situ sensor metrics, and pollution heatmaps.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
